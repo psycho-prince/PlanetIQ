@@ -2,7 +2,7 @@ import csv
 import io
 import requests
 
-from backend.core.config import settings
+from core.config import settings
 
 
 class FIRMSAreaAPI:

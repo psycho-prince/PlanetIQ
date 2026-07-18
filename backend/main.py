@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-from backend.services.fusion_engine import fusion_engine
+from services.fusion_engine import fusion_engine
 
 
 @asynccontextmanager
@@ -29,10 +29,10 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
-        "http://localhost:5174",
         "http://127.0.0.1:5173",
+        "http://localhost:5174",
         "http://127.0.0.1:5174",
-        "*",  # Remove this in production
+        "*",  # Remove "*" in production
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -50,11 +50,11 @@ class AnalyzeRequest(BaseModel):
 
 
 # ----------------------------
-# Root
+# Routes
 # ----------------------------
 
 @app.get("/")
-def root():
+async def root():
     return {
         "project": "PlanetIQ",
         "version": "1.0.0",
@@ -63,36 +63,24 @@ def root():
     }
 
 
-# ----------------------------
-# Health
-# ----------------------------
-
 @app.get("/health")
-def health():
+async def health():
     return {
         "status": "healthy",
         "service": "PlanetIQ Backend",
     }
 
 
-# ----------------------------
-# Analyze
-# ----------------------------
-
 @app.post("/analyze")
-def analyze(request: AnalyzeRequest):
+async def analyze(request: AnalyzeRequest):
     return fusion_engine.analyze(
         request.latitude,
         request.longitude,
     )
 
 
-# ----------------------------
-# API Info
-# ----------------------------
-
 @app.get("/info")
-def info():
+async def info():
     return {
         "name": "PlanetIQ",
         "version": "1.0.0",
@@ -103,3 +91,14 @@ def info():
             "Environmental Risk Assessment",
         ],
     }
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(
+        "main:app",
+        host="0.0.0.0",
+        port=8000,
+        reload=True,
+    )

@@ -1,92 +1,96 @@
 import { useState } from "react";
-import axios from "axios";
 import MapView from "./components/MapView";
-import "./App.css";
+import EcosystemCard from "./components/EcosystemCard";
+import Loading from "./components/Loading";
+import { analyzeLocation } from "./services/api";
+import "./dashboard.css";
 
-function App() {
+export default function App() {
   const [location, setLocation] = useState({
-    lat: 9.9312,
-    lng: 76.2673,
+    lat: 10.0159,
+    lng: 76.3419,
   });
 
-  const [data, setData] = useState(null);
+  const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  async function analyze() {
+  async function handleAnalyze() {
+    if (loading) return;
+
     setLoading(true);
+    setError("");
 
     try {
-      const res = await axios.post("http://127.0.0.1:8000/analyze", {
-        latitude: location.lat,
-        longitude: location.lng,
-      });
+      const data = await analyzeLocation(
+        location.lat,
+        location.lng
+      );
 
-      setData(res.data);
+      setResult(data);
     } catch (err) {
       console.error(err);
-      alert("Cannot connect to backend.");
+      setError("Unable to analyze this location.");
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   }
 
   return (
-    <div
-      style={{
-        maxWidth: "1100px",
-        margin: "30px auto",
-        fontFamily: "Arial",
-      }}
-    >
-      <h1>🌍 PlanetIQ</h1>
-      <p>AI Powered Ecosystem Intelligence</p>
+    <div className="app">
+
+      <header className="header">
+        <h1>🌍 PlanetIQ</h1>
+        <p>AI Powered Ecosystem Intelligence</p>
+      </header>
 
       <MapView
         location={location}
-        onSelect={(pos) => setLocation(pos)}
+        onSelect={(latlng) =>
+          setLocation({
+            lat: latlng.lat,
+            lng: latlng.lng,
+          })
+        }
       />
 
-      <br />
+      <div className="controls">
 
-      <button
-        onClick={analyze}
-        disabled={loading}
-      >
-        {loading ? "Analyzing..." : "Analyze Selected Location"}
-      </button>
+        <button
+          onClick={handleAnalyze}
+          disabled={loading}
+        >
+          {loading
+            ? "Analyzing..."
+            : "Analyze Selected Location"}
+        </button>
 
-      <br />
-      <br />
+        <div className="coords">
+          <p>
+            <strong>Latitude:</strong>{" "}
+            {location.lat.toFixed(4)}
+          </p>
 
-      <strong>Latitude:</strong> {location.lat.toFixed(4)}
-      <br />
-      <strong>Longitude:</strong> {location.lng.toFixed(4)}
+          <p>
+            <strong>Longitude:</strong>{" "}
+            {location.lng.toFixed(4)}
+          </p>
+        </div>
 
-      {data && (
-        <>
-          <hr />
+      </div>
 
-          <h2>Ecosystem Health</h2>
-          <h1>{data.ecosystem_health}%</h1>
+      {loading && <Loading />}
 
-          <h3>Risk</h3>
-          <p>{data.risk}</p>
-
-          <h3>Weather</h3>
-          <p>🌡 {data.weather.data.temperature} °C</p>
-          <p>💧 {data.weather.data.humidity}%</p>
-          <p>🌬 {data.weather.data.wind_speed} km/h</p>
-
-          <h3>Recommendations</h3>
-          <ul>
-            {data.recommendations.map((item, index) => (
-              <li key={index}>{item}</li>
-            ))}
-          </ul>
-        </>
+      {error && (
+        <div className="error">
+          {error}
+        </div>
       )}
+
+      {result && (
+        <EcosystemCard data={result} />
+      )}
+
     </div>
   );
 }
-
-export default App;

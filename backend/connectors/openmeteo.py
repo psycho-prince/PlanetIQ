@@ -1,7 +1,7 @@
 import requests
 
-from backend.connectors.base import BaseConnector
-from backend.core.config import settings
+from connectors.base import BaseConnector
+from core.config import settings
 
 
 class OpenMeteoConnector(BaseConnector):

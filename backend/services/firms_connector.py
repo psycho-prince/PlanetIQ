@@ -5,7 +5,7 @@ from typing import Dict, List
 
 import requests
 
-from backend.core.config import settings
+from core.config import settings
 
 
 class FIRMSConnector:

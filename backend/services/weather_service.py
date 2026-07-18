@@ -2,7 +2,7 @@ from typing import Optional
 
 import requests
 
-from backend.core.config import settings
+from core.config import settings
 
 
 class WeatherService:
