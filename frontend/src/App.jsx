@@ -1,7 +1,14 @@
 import { useState } from "react";
 import axios from "axios";
+import MapView from "./components/MapView";
+import "./App.css";
 
 function App() {
+  const [location, setLocation] = useState({
+    lat: 9.9312,
+    lng: 76.2673,
+  });
+
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -9,18 +16,15 @@ function App() {
     setLoading(true);
 
     try {
-      const res = await axios.post(
-        "http://127.0.0.1:8000/analyze",
-        {
-          latitude: 9.9312,
-          longitude: 76.2673,
-        }
-      );
+      const res = await axios.post("http://127.0.0.1:8000/analyze", {
+        latitude: location.lat,
+        longitude: location.lng,
+      });
 
       setData(res.data);
     } catch (err) {
-      console.log(err);
-      alert("Backend not reachable.");
+      console.error(err);
+      alert("Cannot connect to backend.");
     }
 
     setLoading(false);
@@ -29,57 +33,54 @@ function App() {
   return (
     <div
       style={{
-        background: "#111827",
-        color: "white",
-        minHeight: "100vh",
-        padding: "30px",
+        maxWidth: "1100px",
+        margin: "30px auto",
         fontFamily: "Arial",
       }}
     >
       <h1>🌍 PlanetIQ</h1>
+      <p>AI Powered Ecosystem Intelligence</p>
+
+      <MapView
+        location={location}
+        onSelect={(pos) => setLocation(pos)}
+      />
+
+      <br />
 
       <button
         onClick={analyze}
-        style={{
-          padding: "12px",
-          marginBottom: "20px",
-        }}
+        disabled={loading}
       >
-        {loading ? "Analyzing..." : "Analyze Location"}
+        {loading ? "Analyzing..." : "Analyze Selected Location"}
       </button>
+
+      <br />
+      <br />
+
+      <strong>Latitude:</strong> {location.lat.toFixed(4)}
+      <br />
+      <strong>Longitude:</strong> {location.lng.toFixed(4)}
 
       {data && (
         <>
-          <h2>Ecosystem Health</h2>
+          <hr />
 
+          <h2>Ecosystem Health</h2>
           <h1>{data.ecosystem_health}%</h1>
 
           <h3>Risk</h3>
-
           <p>{data.risk}</p>
 
           <h3>Weather</h3>
+          <p>🌡 {data.weather.data.temperature} °C</p>
+          <p>💧 {data.weather.data.humidity}%</p>
+          <p>🌬 {data.weather.data.wind_speed} km/h</p>
 
-          <p>
-            Temperature:
-            {data.weather.data.temperature}°C
-          </p>
-
-          <p>
-            Humidity:
-            {data.weather.data.humidity}%
-          </p>
-
-          <p>
-            Wind:
-            {data.weather.data.wind_speed} km/h
-          </p>
-
-          <h3>Recommendation</h3>
-
+          <h3>Recommendations</h3>
           <ul>
-            {data.recommendations.map((r, i) => (
-              <li key={i}>{r}</li>
+            {data.recommendations.map((item, index) => (
+              <li key={index}>{item}</li>
             ))}
           </ul>
         </>
