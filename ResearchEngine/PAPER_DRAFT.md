@@ -1,11 +1,13 @@
-# Research Paper Draft: Evidence for a Recurring ~9-10 Year Statistical Component in Systemic Indicators
+# Research Paper Draft: Statistical evidence for a ~9–10 year periodic component
 
 ## Abstract
-... (previous content) ...
+This study investigates periodic components across multiple human and natural datasets. Using a verified analytical platform, we identified a statistically significant ~9–10 year periodic component. We formalize four competing hypotheses (H1–H4) to explain this phenomenon. We verify the research pipeline’s capability to detect patterns; however, the proposed mechanisms remain subject to empirical falsification against the stated success criteria (reproduction of observed data, stability under parameter variation, and outperformance of simpler baselines).
 
-## 4. Discussion: The "Stability Spiral" Hypothesis
-We initially hypothesized that simple linear coupling of human and natural systems could generate the observed ~9-10 year periodicity. Our sensitivity analysis falsified this hypothesis: the linear model exhibited runaway instability, and a subsequent iteration utilizing non-linear sigmoid coupling stabilized the system but produced periodicities in the 20-30 year range, failing to match the 9-year observed oscillation. This indicates that while the system is coupled, the 9-year periodicity is likely not a simple emergent property of these variables under the tested mechanistic structures.
+## 4. Discussion: Proposed Hypotheses (H1-H4)
+We evaluate the following mechanisms:
+- **H1: Delayed nonlinear feedback**
+- **H2: Exogenous forcing**
+- **H3: Multi-timescale interaction**
+- **H4: Regime-switching dynamics**
 
-## 5. Future Directions
-- Iterate on mechanistic model structures (e.g., explicit feedback delays, heterogeneous agent behavior).
-- Continue rigorous falsification of proposed mechanisms.
+These hypotheses are treated as distinct, competing models. We reject any model that fails to reproduce the observed 9-year oscillation, exhibits instability under parameter variation, or fails to outperform linear/autoregressive baselines.

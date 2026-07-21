@@ -1,24 +1,22 @@
 # Mechanistic Validation Roadmap
 
-Following the identification of a systemic ~9–10 year periodicity, we transition from statistical observation to rigorous falsification and mechanistic modeling.
+Following the identification of a systemic ~9–10 year periodicity, we transition from statistical observation to rigorous falsification.
 
-## Phase 1: Reproducibility & Backtesting
-- [x] Freeze datasets (Archive `PlanetIQ/data/raw/`).
-- [x] Implement automated regression tests (Backtesting suite).
-- [ ] Ensure all code and results are reproducible with seeded randomness.
+## Success Criteria
+A model is considered successful ONLY if it:
+1.  **Reproduces observed data**: Generates the ~9-10 year periodicity endogenously.
+2.  **Stable**: Remains stable under parameter variation (±25%).
+3.  **Superior**: Outperforms linear/AR(1) baselines in out-of-sample forecast validation.
 
-## Phase 2: Mechanistic Modeling (Systems Dynamics)
-- [ ] Build structural system dynamics model incorporating causal links:
-    - Climate -> Agriculture -> Food Prices -> Conflict -> GDP -> Adaptation -> Climate.
-- [ ] Simulate the model to check if endogenous ~9-year oscillations emerge.
+## Research Hypotheses (H1-H4)
+- [ ] **H1: Delayed nonlinear feedback**
+- [ ] **H2: Exogenous forcing**
+- [ ] **H3: Multi-timescale interaction**
+- [ ] **H4: Regime-switching dynamics**
 
-## Phase 3: Falsification & Rigor (Executed)
-- [x] **Sensitivity Analysis**: Conducted parameter grid variation (Lomb-Scargle density).
-- [x] **Randomized Window Validation**: Tested peak persistence under randomized sampling.
-- [ ] **Baseline Comparison**: Compare cycle-based model performance vs. Linear Trends and Standard AR models.
-- [ ] **Out-of-sample Validation (Backtesting)**: Train on 1960–2000; test on 2001–2025.
-- [ ] **Uncertainty Quantification**: Calculate confidence intervals for all spectral peaks and causal indices.
-
-## Phase 4: Independent Replication
-- [ ] Re-run pipeline on regional/individual country data.
-- [ ] Compare results from independent historical data providers (e.g., FAO, World Bank, local climate archives).
+## Phase 1: Falsification Implementation
+- [ ] Implement H1 (Delayed nonlinear feedback) ABM.
+- [ ] Run stress-test suite (Sensitivity analysis).
+- [ ] Evaluate against success criteria.
+- [ ] Reject if criteria are not met.
+- [ ] Repeat for H2-H4.
