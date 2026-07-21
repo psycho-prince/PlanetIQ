@@ -12,8 +12,9 @@ Following the identification of a systemic ~9–10 year periodicity, we transiti
     - Climate -> Agriculture -> Food Prices -> Conflict -> GDP -> Adaptation -> Climate.
 - [ ] Simulate the model to check if endogenous ~9-year oscillations emerge.
 
-## Phase 3: Falsification & Rigor
-- [ ] **Sensitivity Analysis**: Vary parameters (±10–50%) to test stability of the cycle.
+## Phase 3: Falsification & Rigor (Executed)
+- [x] **Sensitivity Analysis**: Conducted parameter grid variation (Lomb-Scargle density).
+- [x] **Randomized Window Validation**: Tested peak persistence under randomized sampling.
 - [ ] **Baseline Comparison**: Compare cycle-based model performance vs. Linear Trends and Standard AR models.
 - [ ] **Out-of-sample Validation (Backtesting)**: Train on 1960–2000; test on 2001–2025.
 - [ ] **Uncertainty Quantification**: Calculate confidence intervals for all spectral peaks and causal indices.
