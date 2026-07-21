@@ -9,8 +9,8 @@ A model is considered successful ONLY if it:
 3.  **Superior**: Outperforms linear/AR(1) baselines in out-of-sample forecast validation.
 
 ## Research Hypotheses (H1-H4)
-- [ ] **H1: Delayed nonlinear feedback**
-- [ ] **H2: Exogenous forcing**
+- [x] **H1: Delayed nonlinear feedback** (Rejected: Period ~25y)
+- [x] **H2: Exogenous forcing** (Supported: Period ~9y)
 - [ ] **H3: Multi-timescale interaction**
 - [ ] **H4: Regime-switching dynamics**
 
