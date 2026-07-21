@@ -1,27 +1,28 @@
 import random
+import math
 
 class SystemAgent:
-    """Agent representing a system domain (Climate, Agri, etc.)"""
+    """Agent representing a system domain with non-linear threshold activation."""
     def __init__(self, name, state, coupling_coeffs):
         self.name = name
         self.state = state
-        self.coupling_coeffs = coupling_coeffs # {other_name: coefficient}
+        self.coupling_coeffs = coupling_coeffs
 
     def update(self, neighbor_states):
-        # State update = Internal dynamics (autoregressive) + Coupling influences
-        # Simplified: s_t = phi * s_{t-1} + sum(coeff * neighbor_s) + noise
+        # Linear sum of influences
+        raw_influence = sum(self.coupling_coeffs.get(name, 0) * state 
+                            for name, state in neighbor_states.items())
         
-        influence = sum(self.coupling_coeffs.get(name, 0) * state 
-                        for name, state in neighbor_states.items())
+        # Apply Sigmoid activation to constraint systemic feedback
+        # Prevents the runaway instability observed in linear models
+        influence = 1.0 / (1.0 + math.exp(-raw_influence)) - 0.5
         
-        # Internal autoregressive component (e.g., 0.8)
-        self.state = 0.8 * self.state + influence + random.gauss(0, 0.1)
+        # Internal autoregressive component + non-linear coupling
+        self.state = 0.8 * self.state + influence + random.gauss(0, 0.05)
         return self.state
 
 class SystemDynamicsModel:
     def __init__(self):
-        # Define causal influence matrix
-        # Climate -> Agri, Conflict -> Biodiversity, etc.
         self.agents = {
             'Climate': SystemAgent('Climate', 0.5, {'Agri': 0.1}),
             'Agri': SystemAgent('Agri', 0.5, {'Climate': 0.2, 'Biodiversity': 0.1}),
@@ -37,16 +38,3 @@ class SystemDynamicsModel:
         for name, agent in self.agents.items():
             new_states[name] = agent.update(current_states)
         return new_states
-
-# Test the ABM simulation
-if __name__ == "__main__":
-    model = SystemDynamicsModel()
-    history = []
-    
-    print("Running ABM simulation...")
-    for _ in range(60): # 60 years
-        history.append(model.step())
-        
-    # Print sample of the simulated oscillations
-    for i, step in enumerate(history[::10]):
-        print(f"Year {i*10}: Climate={step['Climate']:.2f}, Conflict={step['Conflict']:.2f}")
